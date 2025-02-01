@@ -152,7 +152,15 @@ except (ModuleNotFoundError, NameError):
     proto_gen('schema.proto')
     print('Generating Python sources...')
     try:
-        run(['protoc', '--python_out=.', '--pyi_out=.', 'schema.proto'])
+        # run(['protoc', '--python_out=.', '--pyi_out=.', 'schema.proto'])
+        from grpc_tools import protoc
+        protoc.main([
+            "grpc_tools.protoc",
+            "-I.",  # Include the current directory
+            "--python_out=.",
+            "--pyi_out=.",  # Generates type hints for Python
+            "schema.proto"
+        ])
     except FileNotFoundError:
         print(
             'ERROR! Protoc not found.',
